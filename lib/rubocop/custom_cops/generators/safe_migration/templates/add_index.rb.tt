@@ -1,0 +1,7 @@
+class <%= class_name %> < ActiveRecord::Migration[7.1]
+  disable_ddl_transaction!
+
+  def change
+    add_index :<%= options[:table] %>, :<%= options[:column] %>, algorithm: :concurrently<%= ", unique: true" if options[:unique] %>
+  end
+end

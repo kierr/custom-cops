@@ -1,0 +1,24 @@
+AllCops:
+  NewCops: disable
+  SuggestExtensions: false
+
+Naming/FileName:
+  Exclude:
+    - 'lib/custom-cops.rb'
+
+Metrics:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/rubocop/custom_cops/generators/**/*.rb'
+    - 'lib/rubocop/custom_cops/comment_window.rb'
+
+Style/Documentation:
+  Exclude:
+    - 'lib/rubocop/custom_cops/generators/**/*.rb'
+
+Layout/LineLength:
+  Exclude:
+    - 'lib/rubocop/custom_cops/generators/**/*.rb'
+
+Style/RedundantFreeze:
+  Enabled: false

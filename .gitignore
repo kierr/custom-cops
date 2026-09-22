@@ -1,0 +1,25 @@
+# Agent state and local tooling — never shipped or committed
+.agents/
+.pi/
+.claude/
+.planning/
+.codex/
+.ruby-lsp/
+
+# Ruby gems
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+Gemfile.lock
+
+# Test artifacts
+coverage/
+.simplecov
+
+# Editor and OS noise
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store

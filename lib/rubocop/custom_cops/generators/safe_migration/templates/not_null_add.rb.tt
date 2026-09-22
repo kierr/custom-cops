@@ -1,0 +1,5 @@
+class <%= class_name %> < ActiveRecord::Migration[7.1]
+  def change
+    add_check_constraint :<%= options[:table] %>, "<%= options[:column] %> IS NOT NULL", name: "<%= options[:table] %>_<%= options[:column] %>_null", validate: false
+  end
+end

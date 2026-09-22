@@ -1,0 +1,12 @@
+class <%= class_name %> < ActiveRecord::Migration[7.1]
+  def up
+    validate_check_constraint :<%= options[:table] %>, name: "<%= options[:table] %>_<%= options[:column] %>_null"
+    change_column_null :<%= options[:table] %>, :<%= options[:column] %>, false
+    remove_check_constraint :<%= options[:table] %>, name: "<%= options[:table] %>_<%= options[:column] %>_null"
+  end
+
+  def down
+    add_check_constraint :<%= options[:table] %>, "<%= options[:column] %> IS NOT NULL", name: "<%= options[:table] %>_<%= options[:column] %>_null", validate: false
+    change_column_null :<%= options[:table] %>, :<%= options[:column] %>, true
+  end
+end

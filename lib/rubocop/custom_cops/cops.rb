@@ -1,0 +1,175 @@
+# typed: strict
+# frozen_string_literal: true
+
+# Lint
+require_relative '../cop/lint/break_instead_of_next'
+require_relative '../cop/lint/broad_rescue_in_domain'
+require_relative '../cop/lint/chained_hash_access_without_dig'
+require_relative '../cop/lint/concurrent_pool_without_connection_limit'
+require_relative '../cop/lint/consumer_ensure_swallows_exception'
+require_relative '../cop/lint/css_attr_value_without_guard'
+require_relative '../cop/lint/css_first_without_nil_guard'
+require_relative '../cop/lint/date_new_with_unguarded_arguments'
+require_relative '../cop/lint/dead_expression_between_sig_and_def'
+require_relative '../cop/lint/discarded_method_result'
+require_relative '../cop/lint/ensure_return_masks_exception'
+require_relative '../cop/lint/errors_add_without_early_return'
+require_relative '../cop/lint/filter_map_side_effect'
+require_relative '../cop/lint/find_by_bang_in_consumer_or_job'
+require_relative '../cop/lint/find_by_bang_in_job'
+require_relative '../cop/lint/find_by_bang_on_optional_lookup'
+require_relative '../cop/lint/global_variable_fallback'
+require_relative '../cop/lint/hardcoded_uuid_in_source'
+require_relative '../cop/lint/ivar_mutex_eager_init'
+require_relative '../cop/lint/mutating_method_nil_return'
+require_relative '../cop/lint/nil_chaining_without_guard'
+require_relative '../cop/lint/nil_default_for_boolean_param'
+require_relative '../cop/lint/nokogiri_attr_value_nil_chain'
+require_relative '../cop/lint/nokolexbor_css_first_without_nil_guard'
+require_relative '../cop/lint/off_by_one_retry_comparison'
+require_relative '../cop/lint/pagination_accumulator_reset_bug'
+require_relative '../cop/lint/redundant_arithmetic_in_log'
+require_relative '../cop/lint/regex_space_in_verbose_mode'
+require_relative '../cop/lint/rescue_duplicates_try_body'
+require_relative '../cop/lint/rescue_references_uninitialized_variable'
+require_relative '../cop/lint/rescue_swallows_without_handling'
+require_relative '../cop/lint/rescue_uses_error_info_global'
+require_relative '../cop/lint/rescue_without_exception_binding'
+require_relative '../cop/lint/response_bracket_access_without_nil_fallback'
+require_relative '../cop/lint/return_unless_bang_method'
+require_relative '../cop/lint/sample_without_fallback'
+require_relative '../cop/lint/sample_without_nil_guard_on_dynamic_receiver'
+require_relative '../cop/lint/service_result_data_without_success_check'
+require_relative '../cop/lint/service_result_new_instead_of_factory'
+require_relative '../cop/lint/silent_rescue_no_track_no_raise'
+require_relative '../cop/lint/sleep_with_magic_number'
+require_relative '../cop/lint/stale_require_path'
+require_relative '../cop/lint/state_transition_missing_unknown_state_guard'
+require_relative '../cop/lint/time_parse_without_rescue'
+require_relative '../cop/lint/timeout_timeout_in_app'
+require_relative '../cop/lint/uncaptured_return_value_in_rescue_scope'
+require_relative '../cop/lint/underscore_prefix_breaks_caller'
+require_relative '../cop/lint/unreachable_after_raise'
+require_relative '../cop/lint/while_loop_without_iteration_bound'
+
+# Lint
+require_relative '../cop/lint/array_shift_before_match_check'
+require_relative '../cop/lint/backoff_without_jitter'
+require_relative '../cop/lint/compact_strips_nil_proxy'
+require_relative '../cop/lint/constant_inside_method'
+require_relative '../cop/lint/insert_all_not_upsert_all'
+require_relative '../cop/lint/lost_atomicity_find_each_update'
+require_relative '../cop/lint/module_never_included'
+require_relative '../cop/lint/nil_elasticsearch_id_breaks_upsert'
+require_relative '../cop/lint/no_status_markers'
+require_relative '../cop/lint/or_operator_with_falsy_float'
+require_relative '../cop/lint/present_drops_boolean_false'
+require_relative '../cop/lint/raise_variable_not_bare'
+require_relative '../cop/lint/rationale_requires_overturning_condition'
+require_relative '../cop/lint/regex_space_in_verbose_mode_body'
+require_relative '../cop/lint/rescue_logs_only_message'
+require_relative '../cop/lint/rescue_without_error_tracking'
+require_relative '../cop/lint/sleep_in_callback_blocks_hydra'
+require_relative '../cop/lint/symbol_key_merge_into_jsonb'
+require_relative '../cop/lint/update_in_after_callback'
+
+# Sorbet
+require_relative '../cop/sorbet/duplicate_sig'
+require_relative '../cop/sorbet/is_a_untyped_always_true'
+require_relative '../cop/sorbet/no_options_splat_in_constructor'
+require_relative '../cop/sorbet/no_t_unsafe_visibility_bypass'
+require_relative '../cop/sorbet/sig_param_name_matches_def'
+require_relative '../cop/sorbet/untyped_ivar_without_t_let'
+require_relative '../cop/sorbet/blank_line_between_sigil_and_pragma'
+require_relative '../cop/sorbet/exhaustive_union_dispatch'
+require_relative '../cop/sorbet/no_gem_type_in_domain_return'
+require_relative '../cop/sorbet/untyped_requires_justification'
+
+# Security
+require_relative '../cop/security/constantize_from_untrusted_source'
+require_relative '../cop/security/contract_params_slice_leak'
+require_relative '../cop/security/no_dynamic_send_from_variable'
+require_relative '../cop/security/service_result_error_disclosure'
+require_relative '../cop/security/sql_string_interpolation'
+
+# Rails
+require_relative '../cop/rails/after_create_instead_of_after_commit'
+require_relative '../cop/rails/cross_directory_namespace_split'
+require_relative '../cop/rails/find_or_create_by_race_condition'
+require_relative '../cop/rails/integer_backed_enum_only'
+require_relative '../cop/rails/lib_app_boundary'
+require_relative '../cop/rails/namespace_home'
+require_relative '../cop/rails/non_ar_code_in_models_top_level'
+require_relative '../cop/rails/one_constant_per_file'
+require_relative '../cop/rails/redundant_namespace'
+require_relative '../cop/rails/result_to_array_first'
+require_relative '../cop/rails/strict_loading_batch'
+require_relative '../cop/rails/synthetic_active_record_method'
+require_relative '../cop/rails/update_column_requires_comment'
+
+# Karafka
+require_relative '../cop/karafka/consumer_rescue_without_reraise'
+require_relative '../cop/karafka/karafka_double_serialization'
+require_relative '../cop/karafka/no_global_producer_access'
+require_relative '../cop/karafka/payload_to_json_before_produce'
+require_relative '../cop/karafka/require_super_in_consume'
+
+# MigrationSafety
+require_relative '../cop/migration_safety/add_check_constraint_validate_false'
+require_relative '../cop/migration_safety/add_foreign_key_validate_false'
+require_relative '../cop/migration_safety/add_index_concurrently'
+require_relative '../cop/migration_safety/base'
+require_relative '../cop/migration_safety/change_column_null_requires_validation'
+require_relative '../cop/migration_safety/no_backfill_in_schema_migration'
+require_relative '../cop/migration_safety/remove_column_safety_assured'
+
+# Logging
+require_relative '../cop/logging/appropriate_log_level'
+require_relative '../cop/logging/consistent_rescue_logging'
+require_relative '../cop/logging/log_then_raise'
+require_relative '../cop/logging/no_extend_loggable'
+require_relative '../cop/logging/no_puts_print_logging'
+require_relative '../cop/logging/no_rails_logger_in_domain_code'
+require_relative '../cop/logging/no_stdlib_logger'
+require_relative '../cop/logging/no_string_interpolation_in_log_call'
+require_relative '../cop/logging/rescue_log_level_too_low'
+require_relative '../cop/logging/single_line_structured'
+
+# Service
+require_relative '../cop/service/no_class_call_override'
+
+# Style
+require_relative '../cop/style/duplicate_branch_body'
+require_relative '../cop/style/duplicate_method_body'
+require_relative '../cop/style/guard_clause_inversion'
+require_relative '../cop/style/hash_delete_without_dup'
+require_relative '../cop/style/redundant_conditional_after_guard'
+
+# Time
+require_relative '../cop/time/no_system_time_now'
+
+# Secrets
+require_relative '../cop/secrets/no_env_fetch_secret_fallback'
+
+# Test
+require_relative '../cop/test/require_expanded_test_helper'
+require_relative '../cop/test/require_vcr_for_external_http'
+require_relative '../cop/test/require_without_vcr_helper'
+require_relative '../cop/test/stub_lambda_kwargs'
+require_relative '../cop/test/test_location_mirrors_source'
+require_relative '../cop/test/orphan_test_file'
+
+# Zeitwerk
+require_relative '../cop/zeitwerk/no_escaping_require_relative'
+require_relative '../cop/zeitwerk/redundant_require_relative'
+require_relative '../cop/zeitwerk/namespace_table_name'
+
+# Performance
+require_relative '../cop/performance/hash_built_every_call'
+
+# Supporting infrastructure
+require_relative 'allowed_paths'
+require_relative 'comment_window'
+require_relative 'constraint_helper'
+require_relative 'generators/safe_migration/safe_migration_generator'
+require_relative 'zeitwerk_ignore_parser'

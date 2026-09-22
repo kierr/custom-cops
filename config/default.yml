@@ -1,0 +1,563 @@
+# Custom departments
+Karafka:
+  Enabled: true
+
+MigrationSafety:
+  Enabled: true
+
+Logging:
+  Enabled: true
+
+Service:
+  Enabled: true
+
+Secrets:
+  Enabled: true
+
+Zeitwerk:
+  Enabled: true
+
+Performance:
+  Enabled: true
+
+Lint/ArrayShiftBeforeMatchCheck:
+  Description: 'Detects `Array#shift` followed by a conditional return that discards the shifted element.'
+  Enabled: true
+
+Lint/BackoffWithoutJitter:
+  Description: 'Detects retry backoff calculations without randomization (jitter).'
+  Enabled: true
+
+Lint/CompactStripsNilProxy:
+  Description: 'Detects `compact` on arrays that strip nil proxy objects.'
+  Enabled: true
+
+Lint/ConstantInsideMethod:
+  Description: 'Detects constants defined inside methods.'
+  Enabled: true
+
+Lint/InsertAllNotUpsertAll:
+  Description: 'Detects `insert_all` used where `upsert_all` is needed for idempotency.'
+  Enabled: true
+
+Lint/LostAtomicityFindEachUpdate:
+  Description: 'Detects `find_each` + `update` that lose atomicity under concurrent writes.'
+  Enabled: true
+
+Lint/ModuleNeverIncluded:
+  Description: 'Detects modules that are never included or extended.'
+  Enabled: true
+
+Lint/NilElasticsearchIdBreaksUpsert:
+  Description: 'Detects nil Elasticsearch document IDs that break upsert operations.'
+  Enabled: true
+
+Lint/NoStatusMarkers:
+  Description: 'Detects WIP/DONE/FIXME status markers in code.'
+  Enabled: true
+
+Lint/OrOperatorWithFalsyFloat:
+  Description: 'Detects `||` with falsy float values (0.0, NaN).'
+  Enabled: true
+
+Lint/PresentDropsBooleanFalse:
+  Description: 'Detects `present?` on boolean values, which drops false.'
+  Enabled: true
+
+Lint/RaiseVariableNotBare:
+  Description: 'Detects `raise variable` instead of `raise "message"`.'
+  Enabled: true
+
+Lint/RationaleRequiresOverturningCondition:
+  Description: 'Detects RATIONALE comments without an overturning condition.'
+  Enabled: true
+
+Lint/RegexSpaceInVerboseModeBody:
+  Description: 'Detects unescaped spaces in verbose-mode regex body.'
+  Enabled: true
+
+Lint/RescueLogsOnlyMessage:
+  Description: 'Detects rescue blocks that log only the exception message, losing the backtrace.'
+  Enabled: true
+
+Lint/RescueWithoutErrorTracking:
+  Description: 'Detects rescue blocks that catch exceptions without tracking them.'
+  Enabled: true
+
+Lint/SleepInCallbackBlocksHydra:
+  Description: 'Detects `sleep` inside Typhoeus::Hydra callback blocks.'
+  Enabled: true
+
+Lint/SymbolKeyMergeIntoJsonb:
+  Description: 'Detects symbol-keyed hashes merged into jsonb columns.'
+  Enabled: true
+
+Lint/UpdateInAfterCallback:
+  Description: 'Detects `update` calls inside `after_*` callbacks.'
+  Enabled: true
+
+Lint/DeadExpressionBetweenSigAndDef:
+  Description: 'Detects orphaned expressions between a `sig` block and the following `def`.'
+  Enabled: true
+
+Lint/FilterMapSideEffect:
+  Description: 'Detects side-effecting blocks passed to `filter_map`.'
+  Enabled: true
+
+Lint/GlobalVariableFallback:
+  Description: 'Detects global variable fallback patterns that mask unset state.'
+  Enabled: true
+
+Lint/BroadRescueInDomain:
+  Description: 'Detects overly broad rescue in domain/service code.'
+  Enabled: true
+
+Lint/RedundantArithmeticInLog:
+  Description: 'Detects unnecessary arithmetic inside log calls.'
+  Enabled: true
+
+Lint/UncapturedReturnValueInRescueScope:
+  Description: 'Detects return values in rescue blocks that are silently discarded.'
+  Enabled: true
+
+Lint/DiscardedMethodResult:
+  Description: 'Detects method calls whose return value is discarded when it likely matters.'
+  Enabled: true
+
+Lint/StaleRequirePath:
+  Description: 'Detects require paths that no longer resolve.'
+  Enabled: true
+
+Lint/BreakInsteadOfNext:
+  Description: 'Detects `break` inside collection methods where `next` is intended.'
+  Enabled: true
+
+Lint/NilDefaultForBooleanParam:
+  Description: 'Detects `nil` as default for boolean-typed parameters.'
+  Enabled: true
+
+Lint/RescueWithoutExceptionBinding:
+  Description: 'Detects rescue blocks that catch exceptions without binding the exception object.'
+  Enabled: true
+
+Lint/RescueSwallowsWithoutHandling:
+  Description: 'Detects rescue blocks that swallow exceptions without handling or logging them.'
+  Enabled: true
+
+Lint/SilentRescueNoTrackNoRaise:
+  Description: 'Detects silent rescue blocks that neither track nor re-raise the exception.'
+  Enabled: true
+
+Lint/RescueUsesErrorInfoGlobal:
+  Description: 'Detects use of `$@`/`$!` instead of the bound exception variable.'
+  Enabled: true
+
+Lint/UnderscorePrefixBreaksCaller:
+  Description: 'Detects underscore-prefixed method names that break caller expectations.'
+  Enabled: true
+
+Lint/WhileLoopWithoutIterationBound:
+  Description: 'Detects while loops with no guaranteed termination bound.'
+  Enabled: true
+
+Lint/NilChainingWithoutGuard:
+  Description: 'Detects method chaining on potentially nil receivers without a guard.'
+  Enabled: true
+
+Lint/ChainedHashAccessWithoutDig:
+  Description: 'Detects chained hash `[]` access where `dig` is safer.'
+  Enabled: true
+
+Lint/RescueReferencesUninitializedVariable:
+  Description: 'Detects local variables referenced in rescue that may not be initialized.'
+  Enabled: true
+
+Lint/UnreachableAfterRaise:
+  Description: 'Detects code after `raise` that can never execute.'
+  Enabled: true
+
+Lint/ReturnUnlessBangMethod:
+  Description: 'Detects `return unless` on bang methods where the return value is misleading.'
+  Enabled: true
+
+Lint/MutatingMethodNilReturn:
+  Description: 'Detects mutating methods that return nil, which can mask bugs.'
+  Enabled: true
+
+Lint/TimeParseWithoutRescue:
+  Description: 'Detects `Time.parse` calls not wrapped in a rescue or safe parser.'
+  Enabled: true
+
+Lint/FindByBangOnOptionalLookup:
+  Description: 'Detects `find_by!` when the lookup is optional (nil is acceptable).'
+  Enabled: true
+
+Lint/SampleWithoutFallback:
+  Description: 'Detects `sample` on potentially empty collections without a fallback.'
+  Enabled: true
+
+Lint/SampleWithoutNilGuardOnDynamicReceiver:
+  Description: 'Detects `sample` on a dynamic receiver that may be nil.'
+  Enabled: true
+
+Lint/NokogiriAttrValueNilChain:
+  Description: 'Detects chained attribute access on Nokogiri nodes that may return nil.'
+  Enabled: true
+
+Lint/NokolexborCssFirstWithoutNilGuard:
+  Description: 'Detects `css(...).first` on Nokolexbor documents without nil guard.'
+  Enabled: true
+
+Lint/OffByOneRetryComparison:
+  Description: 'Detects off-by-one errors in retry count comparisons.'
+  Enabled: true
+
+Lint/EnsureReturnMasksException:
+  Description: 'Detects explicit `return` in `ensure` that masks in-flight exceptions.'
+  Enabled: true
+
+Lint/FindByBangInJob:
+  Description: 'Detects `find_by!` in job classes where the record may not exist.'
+  Enabled: true
+
+Lint/HardcodedUuidInSource:
+  Description: 'Detects hardcoded UUIDs in source code that should be constants or config.'
+  Enabled: true
+
+Lint/ServiceResultDataWithoutSuccessCheck:
+  Description: 'Detects accessing `data` on a ServiceResult without checking `success`.'
+  Enabled: true
+
+Lint/ServiceResultNewInsteadOfFactory:
+  Description: 'Detects `ServiceResult.new` and recommends factory methods.'
+  Enabled: true
+
+Lint/RescueDuplicatesTryBody:
+  Description: 'Detects rescue blocks that duplicate the body of the try block.'
+  Enabled: true
+
+Lint/CssFirstWithoutNilGuard:
+  Description: 'Detects `css(...).first` or `at_css` without a nil guard.'
+  Enabled: true
+
+Lint/DateNewWithUnguardedArguments:
+  Description: 'Detects `Date.new` with arguments that may be invalid.'
+  Enabled: true
+
+Lint/FindByBangInConsumerOrJob:
+  Description: 'Detects `find_by!` in consumer or job classes where the record may not exist.'
+  Enabled: true
+
+Lint/IvarMutexEagerInit:
+  Description: 'Detects mutex ivars that require eager initialization.'
+  Enabled: true
+
+Lint/CssAttrValueWithoutGuard:
+  Description: 'Detects CSS attribute value access without nil guard.'
+  Enabled: true
+
+Lint/ConsumerEnsureSwallowsException:
+  Description: 'Detects explicit `return` in ensure blocks of consumer classes.'
+  Enabled: true
+
+Lint/ConcurrentPoolWithoutConnectionLimit:
+  Description: 'Detects connection pools without an explicit connection limit.'
+  Enabled: true
+
+Lint/PaginationAccumulatorResetBug:
+  Description: 'Detects pagination accumulator patterns that silently reset.'
+  Enabled: true
+
+Lint/ErrorsAddWithoutEarlyReturn:
+  Description: 'Detects `errors.add` without a following early return.'
+  Enabled: true
+
+Lint/StateTransitionMissingUnknownStateGuard:
+  Description: 'Detects state transitions without a guard for unknown states.'
+  Enabled: true
+
+Lint/RegexSpaceInVerboseMode:
+  Description: 'Detects unescaped literal spaces in verbose-mode regexes.'
+  Enabled: true
+
+Lint/ResponseBracketAccessWithoutNilFallback:
+  Description: 'Detects bracket access on HTTP responses without nil fallback.'
+  Enabled: true
+
+Lint/SleepWithMagicNumber:
+  Description: 'Detects `sleep` with an unexplained magic number.'
+  Enabled: true
+
+Lint/TimeoutTimeoutInApp:
+  Description: 'Detects `Timeout.timeout` in application code.'
+  Enabled: true
+
+Sorbet/BlankLineBetweenSigilAndPragma:
+  Description: 'Detects blank lines between the `typed:` sigil and `frozen_string_literal:` pragma.'
+  Enabled: true
+
+Sorbet/NoTUnsafeVisibilityBypass:
+  Description: 'Detects `T.unsafe` used to bypass visibility modifiers.'
+  Enabled: true
+
+Sorbet/DuplicateSig:
+  Description: 'Detects duplicate `sig` declarations for the same method.'
+  Enabled: true
+
+Sorbet/SigParamNameMatchesDef:
+  Description: 'Detects sig parameter names that differ from the method definition.'
+  Enabled: true
+
+Sorbet/NoOptionsSplatInConstructor:
+  Description: 'Detects `**options` splats in constructors that bypass Sorbet typing.'
+  Enabled: true
+
+Sorbet/UntypedIvarWithoutTLet:
+  Description: 'Detects untyped instance variables without `T.let` annotation.'
+  Enabled: true
+
+Sorbet/ExhaustiveUnionDispatch:
+  Description: 'Requires `T.absurd` in the else branch when dispatching over union types.'
+  Enabled: true
+
+Sorbet/NoGemTypeInDomainReturn:
+  Description: 'Detects gem types in Sorbet `returns` annotations within domain code.'
+  Enabled: true
+
+Sorbet/UntypedRequiresJustification:
+  Description: 'Requires justification comments for `T.untyped` and `T.unsafe`.'
+  Enabled: true
+
+Sorbet/IsAUntypedAlwaysTrue:
+  Description: 'Detects `is_a?` checks on untyped values that always evaluate to true.'
+  Enabled: true
+
+Security/SqlStringInterpolation:
+  Description: 'Detects string interpolation in SQL strings.'
+  Enabled: true
+
+Security/ContractParamsSliceLeak:
+  Description: 'Detects contract `params` slices that leak unrelated keys.'
+  Enabled: true
+
+Security/NoDynamicSendFromVariable:
+  Description: 'Detects `send` with a variable method name from untrusted sources.'
+  Enabled: true
+
+Security/ConstantizeFromUntrustedSource:
+  Description: 'Detects `constantize` on strings from untrusted sources.'
+  Enabled: true
+
+Security/ServiceResultErrorDisclosure:
+  Description: 'Detects ServiceResult error objects that leak internal details.'
+  Enabled: true
+
+Rails/CrossDirectoryNamespaceSplit:
+  Description: 'Detects namespaces split between `app/models/` and `app/lib/`.'
+  Enabled: true
+
+Rails/LibAppBoundary:
+  Description: 'Detects `lib/` code that depends on `app/` code or vice versa.'
+  Enabled: true
+
+Rails/NamespaceHome:
+  Description: 'Detects namespaces whose files are not in their canonical directory.'
+  Enabled: true
+
+Rails/NonArCodeInModelsTopLevel:
+  Description: 'Detects non-ActiveRecord code at the top level of `app/models/`.'
+  Enabled: true
+
+Rails/OneConstantPerFile:
+  Description: 'Detects files that define more than one constant.'
+  Enabled: true
+
+Rails/RedundantNamespace:
+  Description: 'Detects single-file namespace wrapping that adds no value.'
+  Enabled: true
+
+Rails/SyntheticActiveRecordMethod:
+  Description: 'Detects redefinition of ActiveRecord methods that hides the original.'
+  Enabled: true
+
+Rails/UpdateColumnRequiresComment:
+  Description: 'Detects `update_column` calls without an explanatory comment.'
+  Enabled: true
+
+Rails/IntegerBackedEnumOnly:
+  Description: 'Enforces integer-backed enums only.'
+  Enabled: true
+
+Rails/FindOrCreateByRaceCondition:
+  Description: 'Detects `find_or_create_by` race condition patterns.'
+  Enabled: true
+
+Rails/AfterCreateInsteadOfAfterCommit:
+  Description: 'Detects `after_create` used where `after_commit` is needed for side effects.'
+  Enabled: true
+
+Rails/ResultToArrayFirst:
+  Description: 'Detects `result.to_a.first` where `result.first` suffices.'
+  Enabled: true
+
+Rails/StrictLoadingBatch:
+  Description: 'Detects batch-loaded associations without `strict_loading`.'
+  Enabled: true
+
+Karafka/ConsumerRescueWithoutReraise:
+  Description: 'Detects rescue blocks in Karafka consumers that swallow exceptions.'
+  Enabled: true
+
+Karafka/RequireSuperInConsume:
+  Description: 'Requires `super` in Karafka consumer `consume` methods.'
+  Enabled: true
+
+Karafka/KarafkaDoubleSerialization:
+  Description: 'Detects double serialization in Karafka message production.'
+  Enabled: true
+
+Karafka/NoGlobalProducerAccess:
+  Description: 'Detects direct access to the global Karafka producer.'
+  Enabled: true
+
+Karafka/PayloadToJsonBeforeProduce:
+  Description: 'Detects manual `to_json` before Karafka produce (double serialization).'
+  Enabled: true
+
+MigrationSafety/AddIndexConcurrently:
+  Description: 'Requires concurrent index creation in migrations.'
+  Enabled: true
+
+MigrationSafety/AddForeignKeyValidateFalse:
+  Description: 'Requires foreign keys to be added without validation, then validated separately.'
+  Enabled: true
+
+MigrationSafety/AddCheckConstraintValidateFalse:
+  Description: 'Requires check constraints to be added without validation, then validated separately.'
+  Enabled: true
+
+MigrationSafety/ChangeColumnNullRequiresValidation:
+  Description: 'Requires NOT NULL changes to follow the safe two-step pattern.'
+  Enabled: true
+
+MigrationSafety/RemoveColumnSafetyAssured:
+  Description: 'Requires explicit safety assurance when removing columns.'
+  Enabled: true
+
+MigrationSafety/NoBackfillInSchemaMigration:
+  Description: 'Prevents data backfill in schema migrations.'
+  Enabled: true
+
+Logging/NoStdlibLogger:
+  Description: 'Detects use of Ruby stdlib Logger instead of SemanticLogger.'
+  Enabled: true
+
+Logging/NoPutsPrintLogging:
+  Description: 'Detects `puts`/`print` used for logging output.'
+  Enabled: true
+
+Logging/NoRailsLoggerInDomainCode:
+  Description: 'Detects `Rails.logger` in domain/service code.'
+  Enabled: true
+
+Logging/LogThenRaise:
+  Description: 'Detects `raise` after log without re-raising context.'
+  Enabled: true
+
+Logging/NoStringInterpolationInLogCall:
+  Description: 'Detects string interpolation in log calls (use block form instead).'
+  Enabled: true
+
+Logging/NoExtendLoggable:
+  Description: 'Detects `extend Loggable` (use `include Loggable` or class-level logger).'
+  Enabled: true
+
+Logging/SingleLineStructured:
+  Description: 'Enforces single-line structured log calls.'
+  Enabled: true
+
+Logging/AppropriateLogLevel:
+  Description: 'Detects log levels that are inappropriate for the message severity.'
+  Enabled: true
+
+Logging/RescueLogLevelTooLow:
+  Description: 'Detects rescue blocks that log at too low a level for an exception.'
+  Enabled: true
+
+Logging/ConsistentRescueLogging:
+  Description: 'Enforces consistent logging patterns in rescue blocks.'
+  Enabled: true
+
+Service/NoClassCallOverride:
+  Description: 'Detects `.call` overrides on service classes that break the call convention.'
+  Enabled: true
+
+Style/DuplicateBranchBody:
+  Description: 'Detects `if`/`else` branches with identical method call bodies.'
+  Enabled: true
+
+Style/DuplicateMethodBody:
+  Description: 'Detects methods with structurally identical bodies.'
+  Enabled: true
+
+Style/GuardClauseInversion:
+  Description: 'Detects guard clauses with inverted conditions.'
+  Enabled: true
+
+Style/RedundantConditionalAfterGuard:
+  Description: 'Detects conditionals that are redundant after a guard clause.'
+  Enabled: true
+
+Style/HashDeleteWithoutDup:
+  Description: 'Detects `hash.delete` without `dup` when the original is still needed.'
+  Enabled: true
+
+Performance/HashBuiltEveryCall:
+  Description: 'Detects a Hash literal returned inside a method body where the hash contains only static keys and values.'
+  Enabled: true
+
+Time/NoSystemTimeNow:
+  Description: 'Detects `Time.now` (use `Time.current` for timezone-aware time).'
+  Enabled: true
+
+Secrets/NoEnvFetchSecretFallback:
+  Description: 'Detects `ENV.fetch` with a fallback for secret values.'
+  Enabled: true
+
+Test/TestLocationMirrorsSource:
+  Description: 'Enforces that test files mirror their source file location.'
+  Enabled: true
+
+Test/OrphanTestFile:
+  Description: 'Flags test files with no corresponding implementation file.'
+  Enabled: true
+
+Test/StubLambdaKwargs:
+  Description: 'Detects lambda stubs that ignore keyword arguments.'
+  Enabled: true
+
+Test/RequireVcrForExternalHttp:
+  Description: 'Requires VCR for external HTTP requests in tests.'
+  Enabled: true
+
+Test/RequireWithoutVcrHelper:
+  Description: 'Requires `WithoutVCR` helper for tests making real HTTP calls.'
+  Enabled: true
+
+Test/RequireExpandedTestHelper:
+  Description: 'Requires the expanded test helper in test files that need it.'
+  Enabled: true
+
+Zeitwerk/NoEscapingRequireRelative:
+  Description: 'Detects `require_relative` with escaping paths (`..`).'
+  Enabled: true
+
+Zeitwerk/RedundantRequireRelative:
+  Description: 'Detects `require_relative` in `app/` where the target is autoloaded by Zeitwerk.'
+  Enabled: true
+
+Zeitwerk/NamespaceTableName:
+  Description: 'Detects namespaced models that must declare `self.table_name` due to Zeitwerk inference mismatch.'
+  Enabled: true
+  Namespaces:
+    - Source

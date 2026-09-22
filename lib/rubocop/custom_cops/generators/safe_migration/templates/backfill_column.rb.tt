@@ -1,0 +1,30 @@
+class <%= class_name %> < ActiveRecord::Migration[7.1]
+  disable_ddl_transaction!
+
+  def up
+    batch_size = ENV.fetch("BATCH_SIZE", 10_000).to_i
+    pause_ms   = ENV.fetch("BATCH_PAUSE_MS", 10).to_i
+    last_id = 0
+    loop do
+      updated = execute(<<~SQL)
+        WITH rows AS (
+          SELECT id FROM <%= options[:table] %>
+          WHERE id > #{last_id} AND <%= options[:column] %> IS NULL
+          ORDER BY id
+          LIMIT #{batch_size}
+        )
+        UPDATE <%= options[:table] %> t
+        SET <%= options[:column] %> = <%= options[:value] || "NULL" %>
+        FROM rows
+        WHERE t.id = rows.id
+        RETURNING t.id
+      SQL
+      count = updated.cmd_tuples
+      break if count == 0
+      last_id = updated.values.last.first.to_i
+      sleep(pause_ms / 1000.0)
+    end
+  end
+
+  def down; end
+end
