@@ -5,5 +5,7 @@ pre-commit:
         - config/default.yml
         - lib/rubocop/cop/**/*.rb
         - lib/tasks/readme.rake
-      run: bundle exec rake readme:generate
-      stage_fixed: true
+      # stage_fixed only re-stages files matching `glob`; README.md is generated
+      # by the command and isn't in the glob, so it must be added explicitly.
+      # See https://github.com/evilmartians/lefthook/issues/806
+      run: bundle exec rake readme:generate && git add README.md
