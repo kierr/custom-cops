@@ -9,6 +9,8 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/kierr/
 3. Add the cop to the require list in `lib/rubocop/custom_cops/cops.rb`.
 4. Add tests in `test/` mirroring the source path.
 5. Run `bundle exec rake test` and `bundle exec rubocop` to verify.
+6. Run `bundle exec rake readme:generate` — or just commit, and the
+   pre-commit hook regenerates it. CI fails if the README tables are stale.
 
 ## Running tests
 

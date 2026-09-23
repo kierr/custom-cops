@@ -1,0 +1,9 @@
+pre-commit:
+  commands:
+    readme:
+      glob:
+        - config/default.yml
+        - lib/rubocop/cop/**/*.rb
+        - lib/tasks/readme.rake
+      run: bundle exec rake readme:generate
+      stage_fixed: true
