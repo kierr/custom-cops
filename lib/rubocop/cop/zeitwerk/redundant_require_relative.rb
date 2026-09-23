@@ -17,7 +17,7 @@ module RuboCop
       #   require_relative 'another_constant'
       #
       #   # good — target is in the Zeitwerk ignore list (multi-constant file)
-      #   require_relative 'cloak_browser_responses'
+      #   require_relative 'my_api_responses'
       #
       class RedundantRequireRelative < Base
         MSG = 'Redundant `require_relative` — target is autoloaded by Zeitwerk. Remove the call and reference the constant directly.'
@@ -34,7 +34,7 @@ module RuboCop
           # RATIONALE: source-file-is-ignored — when the file containing the
           # require_relative is itself Zeitwerk-ignored, its requires are
           # intentional barrel-file loads, not redundant autoloads. Ignored
-          # barrel files (e.g. cloak_browser_responses.rb) define no constants
+          # barrel files (e.g. my_api_responses.rb) define no constants
           # and exist solely to assemble their siblings via require_relative;
           # flagging those calls would defeat the file's purpose. Would need
           # barrel files to stop being ignored to reconsider.
