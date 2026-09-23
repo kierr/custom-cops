@@ -1,8 +1,10 @@
 # custom-cops
 
 A RuboCop extension with 135 cops covering lint, Rails, Sorbet, security, Karafka,
-migration safety, logging, test structure, Zeitwerk, and more. Designed for Ruby
-projects using Sorbet, Karafka, and SemanticLogger.
+migration safety, logging, test structure, Zeitwerk, and more. Abstracted from a
+large Rails monolith, distilling over a decade of production wisdom and insight.
+
+Very much bespoke, published so others can cherry pick or learn from these patterns.
 
 ## Installation
 
