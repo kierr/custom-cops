@@ -68,7 +68,9 @@ module RuboCop
 
           add_offense(node.loc.name)
 
-          private
+        end
+
+        private
 
           def check_assignment(node, name)
             return unless BACKOFF_NAMES.include?(name)
@@ -192,7 +194,6 @@ module RuboCop
             end
             nil
           end
-        end
       end
     end
   end

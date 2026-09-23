@@ -75,7 +75,9 @@ module RuboCop
             end
           end
 
-          private
+        end
+
+        private
 
           # Collect all symbol-keyed pairs from hash arguments to merge.
           def symbol_keyed_pairs(node)
@@ -105,7 +107,6 @@ module RuboCop
 
             false
           end
-        end
       end
     end
   end

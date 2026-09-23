@@ -86,40 +86,40 @@ module RuboCop
 
             names
           end
+        end
 
-          # Find def nodes matching the callback method names.
-          def collect_method_nodes(callback_methods)
-            nodes = {}
+        # Find def nodes matching the callback method names.
+        def collect_method_nodes(callback_methods)
+          nodes = {}
 
-            processed_source.ast.each_node(:def) do |def_node|
-              method_name = def_node.method_name
-              next unless callback_methods.include?(method_name)
-              next if nodes.key?(method_name)
+          processed_source.ast.each_node(:def) do |def_node|
+            method_name = def_node.method_name
+            next unless callback_methods.include?(method_name)
+            next if nodes.key?(method_name)
 
-              nodes[method_name] = def_node
-            end
-
-            nodes
+            nodes[method_name] = def_node
           end
 
-          # Walk the body of a callback method and flag any `.update` calls.
-          # update_columns, update_column, and update_all are distinct method names
-          # from :update, so checking == :update alone is sufficient.
-          #
-          # Any `.update` receiver is flagged, not only `self.update`: a class-level
-          # re-save of the same record (`self.class.update(id: id, ...)`) also
-          # re-triggers after_save/after_update on this record, so narrowing to
-          # self-receivers would miss that recursion vector.
-          #
-          # NOTE: callback methods are resolved within the current file only; a
-          # callback defined in a concern or included module is not scanned, so
-          # the cop can false-negative when the handler lives elsewhere.
-          def find_unsafe_updates(body_node, method_name)
-            body_node.each_node(:send) do |send_node|
-              next unless send_node.method_name == :update
+          nodes
+        end
 
-              add_offense(send_node.loc.selector, message: format(MSG, method: method_name))
-            end
+        # Walk the body of a callback method and flag any `.update` calls.
+        # update_columns, update_column, and update_all are distinct method names
+        # from :update, so checking == :update alone is sufficient.
+        #
+        # Any `.update` receiver is flagged, not only `self.update`: a class-level
+        # re-save of the same record (`self.class.update(id: id, ...)`) also
+        # re-triggers after_save/after_update on this record, so narrowing to
+        # self-receivers would miss that recursion vector.
+        #
+        # NOTE: callback methods are resolved within the current file only; a
+        # callback defined in a concern or included module is not scanned, so
+        # the cop can false-negative when the handler lives elsewhere.
+        def find_unsafe_updates(body_node, method_name)
+          body_node.each_node(:send) do |send_node|
+            next unless send_node.method_name == :update
+
+            add_offense(send_node.loc.selector, message: format(MSG, method: method_name))
           end
         end
       end

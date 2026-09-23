@@ -94,150 +94,150 @@ module RuboCop
             return value_node if value_node.hash_type?
           end
           nil
+        end
 
-          # Find the `_id:` or `id:` pair inside the ES operation hash.
-          def find_id_pair(inner_hash)
-            inner_hash.each_pair do |key_node, _value_node|
-              next unless key_node.sym_type? && ID_KEYS.include?(key_node.value)
+        # Find the `_id:` or `id:` pair inside the ES operation hash.
+        def find_id_pair(inner_hash)
+          inner_hash.each_pair do |key_node, _value_node|
+            next unless key_node.sym_type? && ID_KEYS.include?(key_node.value)
 
-              return key_node.parent
-            end
-            nil
+            return key_node.parent
+          end
+          nil
+        end
+
+        # Only flag in app/services/ and app/consumers/ to avoid false positives
+        # in test files, lib/, and other contexts.
+        def in_services_or_consumers?
+          filename = processed_source.file_path
+          filename.include?('app/services/') || filename.include?('app/consumers/')
+        end
+
+        # Check whether the id value is protected by a nil guard in the
+        # enclosing scope. Recognizes:
+        #   - `next/return unless <id_source>` (and `.present?`/`.presence`
+        #     trailing forms) before the ES call
+        #   - `next/return if <id_source>.nil?` or `.blank?` before the ES call
+        #   - `if <id_source>` / `unless <id_source>.nil?` wrapping the call
+        #   - Guards on an intermediate lvar assigned from the id source
+        #     (`cn = record['caseNumber']; next unless cn`)
+        #   - Safe navigation (`&.`) on the bracket access receiver
+        def guarded?(id_value_node, es_hash_node)
+          id_source = id_value_node.source
+
+          # Safe navigation on the bracket access itself: record&.fetch('key') or record&.[]
+          receiver, = bracket_access?(id_value_node)
+          return true if receiver&.csend_type?
+
+          # Check if an enclosing if/unless wraps the ES call with the id as condition.
+          # Must be checked before the container search because the wrapping if
+          # may be the only ancestor (no begin/block/def in between).
+          return true if if_guard_wraps?(es_hash_node, id_source)
+
+          # Check enclosing block/def for a preceding guard.
+          # Walk up to the nearest block, begin, or def node.
+          container = find_container(es_hash_node)
+          return false unless container
+
+          siblings = container_children(container)
+          es_idx = siblings.index(es_hash_node) || siblings.index(es_hash_node.parent)
+          return false unless es_idx
+
+          prior = siblings[0...es_idx]
+          # An intermediate lvar assigned from the id source (`cn = T.cast(
+          # record['caseNumber'], ...)`) is a guard target equivalent to the
+          # bracket access itself, so `next unless cn` protects the call.
+          aliases = alias_lvars(prior, id_source)
+
+          # Search backward through siblings for a guard that references the
+          # id source or one of its lvar aliases.
+          prior.reverse_each do |sibling|
+            return true if guard_references?(sibling, id_source, aliases)
           end
 
-          # Only flag in app/services/ and app/consumers/ to avoid false positives
-          # in test files, lib/, and other contexts.
-          def in_services_or_consumers?
-            filename = processed_source.file_path
-            filename.include?('app/services/') || filename.include?('app/consumers/')
+          false
+        end
+
+        # lvar names assigned earlier in the same container from an expression
+        # containing the id source string. Matches both direct assignment
+        # (`cn = record['caseNumber']`) and wrapped forms (`cn = T.cast(
+        # record['caseNumber'], ...)`), since both make the lvar a stand-in
+        # for the bracket-access value.
+        def alias_lvars(prior_siblings, id_source)
+          prior_siblings.filter_map do |sibling|
+            next unless sibling.lvasgn_type?
+
+            lvar_name, value = sibling.children
+            next unless value&.source&.include?(id_source)
+
+            lvar_name
           end
+        end
 
-          # Check whether the id value is protected by a nil guard in the
-          # enclosing scope. Recognizes:
-          #   - `next/return unless <id_source>` (and `.present?`/`.presence`
-          #     trailing forms) before the ES call
-          #   - `next/return if <id_source>.nil?` or `.blank?` before the ES call
-          #   - `if <id_source>` / `unless <id_source>.nil?` wrapping the call
-          #   - Guards on an intermediate lvar assigned from the id source
-          #     (`cn = record['caseNumber']; next unless cn`)
-          #   - Safe navigation (`&.`) on the bracket access receiver
-          def guarded?(id_value_node, es_hash_node)
-            id_source = id_value_node.source
+        # Find the nearest container that holds sequential statements.
+        def find_container(node)
+          node.each_ancestor(:begin, :block, :def, :defs).first
+        end
 
-            # Safe navigation on the bracket access itself: record&.fetch('key') or record&.[]
-            receiver, = bracket_access?(id_value_node)
-            return true if receiver&.csend_type?
-
-            # Check if an enclosing if/unless wraps the ES call with the id as condition.
-            # Must be checked before the container search because the wrapping if
-            # may be the only ancestor (no begin/block/def in between).
-            return true if if_guard_wraps?(es_hash_node, id_source)
-
-            # Check enclosing block/def for a preceding guard.
-            # Walk up to the nearest block, begin, or def node.
-            container = find_container(es_hash_node)
-            return false unless container
-
-            siblings = container_children(container)
-            es_idx = siblings.index(es_hash_node) || siblings.index(es_hash_node.parent)
-            return false unless es_idx
-
-            prior = siblings[0...es_idx]
-            # An intermediate lvar assigned from the id source (`cn = T.cast(
-            # record['caseNumber'], ...)`) is a guard target equivalent to the
-            # bracket access itself, so `next unless cn` protects the call.
-            aliases = alias_lvars(prior, id_source)
-
-            # Search backward through siblings for a guard that references the
-            # id source or one of its lvar aliases.
-            prior.reverse_each do |sibling|
-              return true if guard_references?(sibling, id_source, aliases)
-            end
-
-            false
-          end
-
-          # lvar names assigned earlier in the same container from an expression
-          # containing the id source string. Matches both direct assignment
-          # (`cn = record['caseNumber']`) and wrapped forms (`cn = T.cast(
-          # record['caseNumber'], ...)`), since both make the lvar an alias
-          # for the bracket-access value.
-          def alias_lvars(prior_siblings, id_source)
-            prior_siblings.filter_map do |sibling|
-              next unless sibling.lvasgn_type?
-
-              lvar_name, value = sibling.children
-              next unless value&.source&.include?(id_source)
-
-              lvar_name
-            end
-          end
-
-          # Find the nearest container that holds sequential statements.
-          def find_container(node)
-            node.each_ancestor(:begin, :block, :def, :defs).first
-          end
-
-          def container_children(container)
-            case container.type
-            when :begin
-              container.children
-            when :block, :def, :defs
-              # The body is children[2] for all these node types.
-              body = container.children[2]
-              if body&.begin_type?
-                body.children
-              elsif body
-                [body]
-              else
-                []
-              end
+        def container_children(container)
+          case container.type
+          when :begin
+            container.children
+          when :block, :def, :defs
+            # The body is children[2] for all these node types.
+            body = container.children[2]
+            if body&.begin_type?
+              body.children
+            elsif body
+              [body]
             else
               []
             end
+          else
+            []
           end
+        end
 
-          # Whether a node is a guard clause that references the id source string
-          # or one of its lvar aliases. The `unless` form is intentionally
-          # unanchored so trailing truthy checks (`next unless X.present?`) match.
-          def guard_references?(node, id_source, aliases = [])
-            return false unless node
+        # Whether a node is a guard clause that references the id source string
+        # or one of its lvar aliases. The `unless` form is intentionally
+        # unanchored so trailing truthy checks (`next unless X.present?`) match.
+        def guard_references?(node, id_source, aliases = [])
+          return false unless node
 
-            alternation = [id_source, *aliases.map(&:to_s)]
-                          .map { |s| Regexp.escape(s) }
-                          .join('|')
-            source = node.source
-            # `next unless <id>` / `return unless <id>` (and trailing .present?/.presence)
-            return true if source.match?(/\A(next|return)\s+unless\s+(?:#{alternation})/)
+          alternation = [id_source, *aliases.map(&:to_s)]
+                        .map { |s| Regexp.escape(s) }
+                        .join('|')
+          source = node.source
+          # `next unless <id>` / `return unless <id>` (and trailing .present?/.presence)
+          return true if source.match?(/\A(next|return)\s+unless\s+(?:#{alternation})/)
 
-            # `next if <id>.nil?` / `return if <id>.nil?`
-            return true if source.match?(/\A(next|return)\s+if\s+(?:#{alternation})\.nil\?/)
+          # `next if <id>.nil?` / `return if <id>.nil?`
+          return true if source.match?(/\A(next|return)\s+if\s+(?:#{alternation})\.nil\?/)
 
-            # `next if <id>.blank?` / `return if <id>.blank?` (inverse present)
-            return true if source.match?(/\A(next|return)\s+if\s+(?:#{alternation})\.blank\?/)
+          # `next if <id>.blank?` / `return if <id>.blank?` (inverse present)
+          return true if source.match?(/\A(next|return)\s+if\s+(?:#{alternation})\.blank\?/)
 
-            false
-          end
+          false
+        end
 
-          # Check if an `if <id>` or `unless <id>.nil?` wraps the ES hash node.
-          def if_guard_wraps?(es_hash_node, id_source)
-            ancestor = es_hash_node.each_ancestor(:if).first
-            return false unless ancestor
+        # Check if an `if <id>` or `unless <id>.nil?` wraps the ES hash node.
+        def if_guard_wraps?(es_hash_node, id_source)
+          ancestor = es_hash_node.each_ancestor(:if).first
+          return false unless ancestor
 
-            condition = ancestor.condition
-            cond_source = condition.source
+          condition = ancestor.condition
+          cond_source = condition.source
 
-            # `if record['caseNumber']` wrapping the ES call
-            return true if cond_source == id_source
+          # `if record['caseNumber']` wrapping the ES call
+          return true if cond_source == id_source
 
-            # `unless record['caseNumber'].nil?`
-            return true if cond_source.match?(/\A#{Regexp.escape(id_source)}\.nil\?\z/)
+          # `unless record['caseNumber'].nil?`
+          return true if cond_source.match?(/\A#{Regexp.escape(id_source)}\.nil\?\z/)
 
-            # `if record['caseNumber'].present?` or `unless ...blank?`
-            return true if cond_source.match?(/\A#{Regexp.escape(id_source)}\.(?:present|blank)\?\z/)
+          # `if record['caseNumber'].present?` or `unless ...blank?`
+          return true if cond_source.match?(/\A#{Regexp.escape(id_source)}\.(?:present|blank)\?\z/)
 
-            false
-          end
+          false
         end
       end
     end
