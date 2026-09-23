@@ -83,9 +83,9 @@ module RuboCop
             when :str
               names.add(first_arg.value.to_sym)
             end
-
-            names
           end
+
+          names
         end
 
         # Find def nodes matching the callback method names.
