@@ -84,47 +84,47 @@ module RuboCop
           body.each_node(:send).any? do |send_node|
             mutation_send?(send_node, param_name)
           end
+        end
 
-          def mutation_send?(node, param_name)
-            return false unless node&.send_type?
+        def mutation_send?(node, param_name)
+          return false unless node&.send_type?
 
-            method_name = node.method_name
-            return false unless UPDATE_METHODS.include?(method_name) || SAVE_METHODS.include?(method_name)
+          method_name = node.method_name
+          return false unless UPDATE_METHODS.include?(method_name) || SAVE_METHODS.include?(method_name)
 
-            receiver = node.receiver
-            return false unless receiver
+          receiver = node.receiver
+          return false unless receiver
 
-            receiver_matches?(receiver, param_name)
-          end
+          receiver_matches?(receiver, param_name)
+        end
 
-          # The receiver might be the block param directly, or wrapped in
-          # a Sorbet cast: `T.cast(e, SomeType).update(...)` or `T.let(e, ApplicationRecord).update(...)`.
-          def receiver_matches?(receiver, param_name)
-            case receiver.type
-            when :lvar
-              receiver.name == param_name
-            when :send
-              # T.cast(bs, Type) or T.let(e, Type)
-              # Send node children: [receiver_const, :method_name, first_arg, second_arg]
-              if sorbet_cast?(receiver)
-                inner = receiver.children[2]
-                inner&.lvar_type? && inner.name == param_name
-              else
-                false
-              end
+        # The receiver might be the block param directly, or wrapped in
+        # a Sorbet cast: `T.cast(e, SomeType).update(...)` or `T.let(e, ApplicationRecord).update(...)`.
+        def receiver_matches?(receiver, param_name)
+          case receiver.type
+          when :lvar
+            receiver.name == param_name
+          when :send
+            # T.cast(bs, Type) or T.let(e, Type)
+            # Send node children: [receiver_const, :method_name, first_arg, second_arg]
+            if sorbet_cast?(receiver)
+              inner = receiver.children[2]
+              inner&.lvar_type? && inner.name == param_name
             else
               false
             end
+          else
+            false
           end
+        end
 
-          def sorbet_cast?(node)
-            return false unless node&.send_type?
+        def sorbet_cast?(node)
+          return false unless node&.send_type?
 
-            receiver = node.receiver
-            return false unless receiver&.const_type?
+          receiver = node.receiver
+          return false unless receiver&.const_type?
 
-            receiver.source == 'T' && %i[cast let].include?(node.method_name)
-          end
+          receiver.source == 'T' && %i[cast let].include?(node.method_name)
         end
       end
     end
