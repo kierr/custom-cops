@@ -10,6 +10,7 @@ Very much bespoke, published so others can cherry pick or learn from these patte
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Compatibility](#compatibility)
 - [Departments](#departments)
 - [Cops by Department](#cops-by-department)
 - [Requirements](#requirements)
@@ -63,6 +64,21 @@ Lint/HardcodedUuidInSource:
   Exclude:
     - db/**/*
 ```
+
+## Compatibility
+
+This gem was previously published under the `RuboCop::Kierr` namespace.
+The namespace alias `RuboCop::Kierr = RuboCop::CustomCops` (and
+`RuboCop::Cop::Kierr = RuboCop::Cop::CustomCops`) is defined in
+`lib/custom-cops.rb`, so downstream code that `include`s
+`::RuboCop::Cop::Kierr::CommentWindow` or `::RuboCop::Cop::Kierr::AllowedPaths`
+resolves against the renamed `CustomCops` modules with no code changes.
+
+One cop was renamed: `Zeitwerk/SourceTableName` → `Zeitwerk/NamespaceTableName`.
+The new cop generalizes the old one (which was hardcoded to `Source::*`) to
+support configurable namespaces via `Namespaces` in `.rubocop.yml`, defaulting
+to `Source`. Migrate by renaming the config key — the behavior is otherwise
+a superset.
 
 ## Departments
 
