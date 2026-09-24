@@ -38,6 +38,12 @@ module CopTestHelper
     processed_source = RuboCop::AST::ProcessedSource.new(source, ruby_version_for_ast, filename)
     commissioner = RuboCop::Cop::Commissioner.new([cop])
     cop.instance_variable_set(:@config, default_config)
+    # The Commissioner API bypasses Team#roundup_relevant_cops, which is where
+    # RuboCop filters out cops disabled via `Enabled: false` in config. Mirror
+    # that gate here so disabled cops produce no offenses (matching real
+    # rubocop runs) instead of firing with status :unsupported.
+    return [] unless default_config.cop_enabled?(cop_class)
+
     report = commissioner.investigate(processed_source)
     report.cop_reports.flat_map(&:offenses)
   end
