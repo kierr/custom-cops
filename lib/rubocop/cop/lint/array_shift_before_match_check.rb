@@ -97,23 +97,23 @@ module RuboCop
           end
 
           nil
+        end
 
-          def return_node?(node)
-            node.is_a?(RuboCop::AST::Node) && node.return_type?
-          end
+        def return_node?(node)
+          node.is_a?(RuboCop::AST::Node) && node.return_type?
+        end
 
-          # Walk to the next sibling statement in the enclosing begin block.
-          def next_sibling(node)
-            parent = node.parent
-            return unless parent&.begin_type?
+        # Walk to the next sibling statement in the enclosing begin block.
+        def next_sibling(node)
+          parent = node.parent
+          return unless parent&.begin_type?
 
-            siblings = parent.children
-            idx = siblings.index(node)
-            return unless idx
-            return unless idx + 1 < siblings.length
+          siblings = parent.children
+          idx = siblings.index(node)
+          return unless idx
+          return unless idx + 1 < siblings.length
 
-            siblings[idx + 1]
-          end
+          siblings[idx + 1]
         end
       end
     end
