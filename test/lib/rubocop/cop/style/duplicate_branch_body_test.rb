@@ -41,7 +41,7 @@ class DuplicateBranchBodyTest < Minitest::Test
     'different_methods' => "if x\n  process_a(item)\nelse\n  process_b(item)\nend",
     'different_args' => "if x\n  add_offense(node, message: MSG_A)\nelse\n  add_offense(node, message: MSG_B)\nend",
     'elsif_chain' => "if x\n  handle_a\nelsif y\n  handle_b\nelse\n  handle_c\nend",
-    'ternary' => "x ? process(item) : process(item)",
+    'ternary' => 'x ? process(item) : process(item)',
     'multi_statement_branch' => "if x\n  log('a')\n  process(item)\nelse\n  process(item)\nend",
     'different_receivers' => "if x\n  foo.process(item)\nelse\n  bar.process(item)\nend"
   }.freeze

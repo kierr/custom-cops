@@ -67,7 +67,8 @@ module RuboCop
 
         def add_constant_offense(source, line, idx)
           line_range = source.buffer.line_range(idx + 1)
-          range = Parser::Source::Range.new(source.buffer, line_range.begin_pos + line.index(/\S/), line_range.begin_pos + line.lstrip.length)
+          range = Parser::Source::Range.new(source.buffer, line_range.begin_pos + line.index(/\S/),
+                                            line_range.begin_pos + line.lstrip.length)
           add_offense(range, message: MSG)
         end
       end

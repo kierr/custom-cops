@@ -66,7 +66,8 @@ module RuboCop
             # direction is correct (app → lib) and no boundary violation exists.
             return unless has_app_dependencies?
 
-            add_offense(find_module_loc || processed_source.buffer.source_range, message: format(MSG, name: module_name))
+            add_offense(find_module_loc || processed_source.buffer.source_range,
+                        message: format(MSG, name: module_name))
             return # One offense per file is enough.
           end
         end

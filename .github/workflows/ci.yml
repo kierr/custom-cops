@@ -28,4 +28,21 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
       - run: bundle exec rubocop --no-color
+      - name: Baseline freshness gate
+        run: |
+          # Strip the volatile timestamp line before comparing so the gate
+          # fails only on real drift (new offenses or stale entries), not on
+          # the generation timestamp changing.
+          normalize() { sed -E '/^# on [0-9]{4}-[0-9]{2}-[0-9]{2}/d' "$1"; }
+          normalize .rubocop_todo.yml > /tmp/todo_committed.txt
+          bundle exec rubocop --auto-gen-config --no-color >/dev/null 2>&1
+          normalize .rubocop_todo.yml > /tmp/todo_regen.txt
+          if ! diff -q /tmp/todo_committed.txt /tmp/todo_regen.txt >/dev/null; then
+            echo "::error::.rubocop_todo.yml is stale. Regenerate with: bundle exec rubocop --auto-gen-config"
+            echo "--- diff (committed vs regenerated, timestamp normalized) ---"
+            diff -u /tmp/todo_committed.txt /tmp/todo_regen.txt || true
+            rm /tmp/todo_committed.txt /tmp/todo_regen.txt
+            exit 1
+          fi
+          rm /tmp/todo_committed.txt /tmp/todo_regen.txt
       - run: bundle exec rake readme:check

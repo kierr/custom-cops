@@ -50,7 +50,8 @@ module RuboCop
 
         # Method names that indicate the receiver comes from a service result,
         # fetch operation, or database query — sources that could return nil/empty.
-        RECEIVER_METHODS = %i[data results records items entries rows proxies accounts pool list all where find_each to_a fetch call].freeze
+        RECEIVER_METHODS = %i[data results records items entries rows proxies accounts pool list all where find_each
+                              to_a fetch call].freeze
 
         # Methods on the sample result's parent that provide nil safety.
         SAFETY_WRAPPERS = %i[cast must].freeze

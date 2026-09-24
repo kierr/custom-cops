@@ -57,6 +57,7 @@ module CopTestHelper
   # Assert that investigating source with the given cop produces no offenses.
   def assert_no_offense(cop_class, source, filename = 'test.rb')
     offenses = investigate(cop_class, source, filename)
-    assert offenses.empty?, "Expected no offenses from #{cop_class}, but got:\n#{offenses.map(&:message).join("\n")}\nSource:\n#{source}"
+    assert offenses.empty?,
+           "Expected no offenses from #{cop_class}, but got:\n#{offenses.map(&:message).join("\n")}\nSource:\n#{source}"
   end
 end

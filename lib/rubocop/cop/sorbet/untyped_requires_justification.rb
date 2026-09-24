@@ -20,21 +20,22 @@ module RuboCop
 
         JUSTIFICATION_PATTERNS = %w[RATIONALE:].freeze
 
-          # RATIONALE: DYNAMIC-BOUNDARY is a module-level exemption for
-          # vendor-JSON adapter clusters where every method returns T.untyped
-          # against the same dynamic boundary (e.g. a vendor API client).
-          # Repeating the full RATIONALE per-sig was redundant boilerplate; the
-          # module-level notice replaces it. Would need the dynamic boundary
-          # to close (typed schema lands) to reconsider; the notice itself
-          # carries the overturning condition.
+        # RATIONALE: DYNAMIC-BOUNDARY is a module-level exemption for
+        # vendor-JSON adapter clusters where every method returns T.untyped
+        # against the same dynamic boundary (e.g. a vendor API client).
+        # Repeating the full RATIONALE per-sig was redundant boilerplate; the
+        # module-level notice replaces it. Would need the dynamic boundary
+        # to close (typed schema lands) to reconsider; the notice itself
+        # carries the overturning condition.
         DYNAMIC_BOUNDARY_PATTERN = 'DYNAMIC-BOUNDARY:'
 
-          # RATIONALE: scope/concern and message-bus DSL contexts are Rails
-          # DSL contexts, not metaprogramming — admitting them let T.unsafe
-          # calls pass with an unrelated RATIONALE. Would need a genuine
-          # dynamic-dispatch pattern to reconsider; "metaprogramming" remains
-          # the generic escape word.
-        METAPROGRAMMING_KEYWORDS = %w[define_method method_missing send __send__ define_singleton_method metaprogramming].freeze
+        # RATIONALE: scope/concern and message-bus DSL contexts are Rails
+        # DSL contexts, not metaprogramming — admitting them let T.unsafe
+        # calls pass with an unrelated RATIONALE. Would need a genuine
+        # dynamic-dispatch pattern to reconsider; "metaprogramming" remains
+        # the generic escape word.
+        METAPROGRAMMING_KEYWORDS = %w[define_method method_missing send __send__ define_singleton_method
+                                      metaprogramming].freeze
 
         def_node_matcher :t_untyped_call?, <<~PATTERN
           (send (const nil? :T) :untyped)

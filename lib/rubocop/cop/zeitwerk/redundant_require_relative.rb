@@ -13,7 +13,7 @@ module RuboCop
       #
       # @example
       #   # bad — target is autoloaded by Zeitwerk, require_relative is redundant
-#   require_relative 'some_constant'
+      #   require_relative 'some_constant'
       #   require_relative 'another_constant'
       #
       #   # good — target is in the Zeitwerk ignore list (multi-constant file)

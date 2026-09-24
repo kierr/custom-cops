@@ -74,14 +74,14 @@ class PresentDropsBooleanFalseTest < Minitest::Test
   # --- Good: no offenses ---
 
   NO_OFFENSE_CASES = {
-    'string_domain' => "name = params[:name] if params[:name].present?",
-    'collection_presence' => "process(items) if items.present?",
+    'string_domain' => 'name = params[:name] if params[:name].present?',
+    'collection_presence' => 'process(items) if items.present?',
     'timestamp_suffix' => "if record.updated_at.present?\n  go\nend",
     'id_suffix' => "if user.id.present?\n  go\nend",
     'non_boolean_name' => "if record.name.present?\n  go\nend",
     'validated_not_valid' => "if record.last_validated_at.present?\n  go\nend",
     'not_in_guard' => "value = user.verified?.present?\nputs value",
-    'explicit_nil_check' => "do_thing if !user.verified?.nil?"
+    'explicit_nil_check' => 'do_thing if !user.verified?.nil?'
   }.freeze
 
   NO_OFFENSE_CASES.each do |name, source|

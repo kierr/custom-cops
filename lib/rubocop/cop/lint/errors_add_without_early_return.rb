@@ -66,7 +66,7 @@ module RuboCop
 
           # Walk all errors.add calls within this method body.
           node.each_node(:send).select { |n| errors_add_call?(n) && !return_errors_add?(n.parent) }
-                               .each do |errors_add|
+              .each do |errors_add|
             next if terminal_in_branch?(errors_add)
 
             add_offense(errors_add)

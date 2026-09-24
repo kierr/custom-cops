@@ -48,7 +48,7 @@ module RuboCop
           text = case node.type
                  when :str then node.value
                  when :dstr then node.children.map { |c| c.is_a?(String) ? c : c.source }
-                                              .join
+                                     .join
                  else node.source
                  end
           ERROR_KEYWORDS.any? { |kw| text.downcase.include?(kw) }

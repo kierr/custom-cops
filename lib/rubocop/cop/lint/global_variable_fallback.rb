@@ -22,7 +22,8 @@ module RuboCop
       class GlobalVariableFallback < Base
         MSG = 'Avoid global variables in application code. Use dependency injection with typed parameters.'
 
-        ALLOWED_GLOBALS = %i[$stdin $stdout $stderr $LOAD_PATH $LOADED_FEATURES $PROGRAM_NAME $! $@ $? $~ $& $` $' $+ $_].freeze
+        ALLOWED_GLOBALS = %i[$stdin $stdout $stderr $LOAD_PATH $LOADED_FEATURES $PROGRAM_NAME $! $@ $? $~ $& $` $' $+
+                             $_].freeze
 
         def on_gvar(node)
           return if ALLOWED_GLOBALS.include?(node.name)

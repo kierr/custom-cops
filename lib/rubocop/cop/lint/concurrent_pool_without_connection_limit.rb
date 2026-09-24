@@ -45,7 +45,8 @@ module RuboCop
         # Phrases that indicate ActiveRecord connection pool sizing awareness.
         # Multi-word phrases must use the array literal form (not %w) so that
         # "connection pool" is a single entry, not two separate keywords.
-        POOL_AWARENESS_PHRASES = ['connection_pool', 'connection pool', 'ar pool', 'database.yml', 'pool:', 'pool='].freeze
+        POOL_AWARENESS_PHRASES = ['connection_pool', 'connection pool', 'ar pool', 'database.yml', 'pool:',
+                                  'pool='].freeze
 
         POOL_METHOD_INDICATORS = %i[with_connection connection_pool].freeze
 

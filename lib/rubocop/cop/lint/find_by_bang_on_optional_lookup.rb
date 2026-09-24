@@ -42,7 +42,8 @@ module RuboCop
         # Directories where find_by! on optional data is likely a bug.
         # Consumers process Kafka messages, jobs run asynchronously,
         # services handle business logic — all deal with external data.
-        OPTIONAL_LAYERS = { 'app/consumers/' => 'consumers', 'app/jobs/' => 'jobs', 'app/services/' => 'services' }.freeze
+        OPTIONAL_LAYERS = { 'app/consumers/' => 'consumers', 'app/jobs/' => 'jobs',
+                            'app/services/' => 'services' }.freeze
 
         def on_send(node)
           return unless BANG_METHODS.include?(node.method_name)

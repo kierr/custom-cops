@@ -27,7 +27,8 @@ module RuboCop
         MSG = 'Test at `test/%<test_dir>s` but source is at `app/%<source_dir>s`. ' \
               'Move this test to `test/%<source_dir>s/%<name>s` to mirror the source location.'
 
-        MAPPED_DIRS = %w[lib models services controllers consumers concerns contracts errors jobs middleware serializers value_objects].freeze
+        MAPPED_DIRS = %w[lib models services controllers consumers concerns contracts errors jobs middleware
+                         serializers value_objects].freeze
 
         # Directories exempt from this check — test infrastructure, not testing a source file.
         EXEMPT_TEST_DIRS = %w[
@@ -63,7 +64,8 @@ module RuboCop
 
           add_offense(
             loc,
-            message: format(MSG, test_dir: test_dir, source_dir: actual_dir, name: File.join(actual_dir, "#{source_basename}_test.rb"))
+            message: format(MSG, test_dir: test_dir, source_dir: actual_dir,
+                                 name: File.join(actual_dir, "#{source_basename}_test.rb"))
           )
         end
 

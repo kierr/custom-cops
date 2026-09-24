@@ -74,39 +74,38 @@ module RuboCop
               corrector.replace(pair.loc.operator, ' =>')
             end
           end
-
         end
 
         private
 
-          # Collect all symbol-keyed pairs from hash arguments to merge.
-          def symbol_keyed_pairs(node)
-            node.arguments.each_with_object([]) do |arg, pairs|
-              next unless arg.hash_type?
+        # Collect all symbol-keyed pairs from hash arguments to merge.
+        def symbol_keyed_pairs(node)
+          node.arguments.each_with_object([]) do |arg, pairs|
+            next unless arg.hash_type?
 
-              arg.children.each do |pair|
-                next unless pair.pair_type?
-                next unless pair.key.sym_type?
+            arg.children.each do |pair|
+              next unless pair.pair_type?
+              next unless pair.key.sym_type?
 
-                pairs << pair
-              end
+              pairs << pair
             end
           end
+        end
 
-          # Determine whether the merge receiver looks like a JSONB column.
-          # BARE_JSONB_NAMES flag bare or chained; RECEIVER_REQUIRED_JSONB_NAMES
-          # flag only the chained (association.column) form. Bare `params` /
-          # `config` / `settings` are almost always ActionController params or
-          # plain config hashes, not JSONB columns.
-          def jsonb_receiver?(node)
-            return false unless node.send_type?
+        # Determine whether the merge receiver looks like a JSONB column.
+        # BARE_JSONB_NAMES flag bare or chained; RECEIVER_REQUIRED_JSONB_NAMES
+        # flag only the chained (association.column) form. Bare `params` /
+        # `config` / `settings` are almost always ActionController params or
+        # plain config hashes, not JSONB columns.
+        def jsonb_receiver?(node)
+          return false unless node.send_type?
 
-            name = node.method_name
-            return true if BARE_JSONB_NAMES.include?(name)
-            return true if RECEIVER_REQUIRED_JSONB_NAMES.include?(name) && node.receiver
+          name = node.method_name
+          return true if BARE_JSONB_NAMES.include?(name)
+          return true if RECEIVER_REQUIRED_JSONB_NAMES.include?(name) && node.receiver
 
-            false
-          end
+          false
+        end
       end
     end
   end

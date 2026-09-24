@@ -20,10 +20,10 @@ class NoSystemTimeNowTest < Minitest::Test
   end
 
   OFFENSE_CASES = {
-    'date_today' => "Date.today",
-    'date_time_now' => "DateTime.now",
-    'fully_qualified_time_now' => "::Time.now",
-    'fully_qualified_date_today' => "::Date.today"
+    'date_today' => 'Date.today',
+    'date_time_now' => 'DateTime.now',
+    'fully_qualified_time_now' => '::Time.now',
+    'fully_qualified_date_today' => '::Date.today'
   }.freeze
 
   OFFENSE_CASES.each do |name, source|
@@ -37,11 +37,11 @@ class NoSystemTimeNowTest < Minitest::Test
   # --- Good: no offenses ---
 
   NO_OFFENSE_CASES = {
-    'time_current' => "Time.current",
-    'time_zone_now' => "Time.zone.now",
-    'date_current' => "Date.current",
+    'time_current' => 'Time.current',
+    'time_zone_now' => 'Time.zone.now',
+    'date_current' => 'Date.current',
     'time_parse' => "Time.parse('2025-01-01')",
-    'other_now_call' => "Clock.now"
+    'other_now_call' => 'Clock.now'
   }.freeze
 
   NO_OFFENSE_CASES.each do |name, source|
