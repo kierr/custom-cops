@@ -502,7 +502,7 @@ Style/DuplicateMethodBody:
 
 Style/GuardClauseInversion:
   Description: 'Detects guard clauses with inverted conditions.'
-  Enabled: true
+  Enabled: false
 
 Style/RedundantConditionalAfterGuard:
   Description: 'Detects conditionals that are redundant after a guard clause.'

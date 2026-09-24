@@ -4,7 +4,7 @@
 module RuboCop
   module Cop
     module Style
-      # DECISION: this cop is NOT wired (.rubocop.yml) and must not be enabled as-is.
+      # DECISION: this cop is disabled in config/default.yml and must not be enabled as-is.
       # Its premise is unsound. A `return unless X` guard returns when X is false, so
       # the statements after it run when X is TRUE — they are reachable, not
       # "unreachable" as the original message claimed. The flagged shape
@@ -17,7 +17,7 @@ module RuboCop
       # No syntactic tightening recovers a sound target: even an unconditional `raise`
       # after the guard runs correctly on the X-true path. Would need a genuinely
       # different bug class (e.g. flow-sensitive detection of a guard inverted from
-      # intent) to reconsider — left here unwired as a stub for that rewrite.
+      # intent) to reconsider — left disabled as a stub for that rewrite.
       class GuardClauseInversion < Base
         MSG = 'Unreachable error-handling after guard clause. Use `if %<condition>s` instead of `return unless %<condition>s`.'
 

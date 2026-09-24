@@ -34,11 +34,10 @@ module RuboCop
           return unless insert_all_with_unique_by?(node)
 
           # No autocorrect: insert_all→upsert_all flips ON CONFLICT DO NOTHING
-          # to DO UPDATE, rewriting existing rows. DO NOTHING dedup is an
-          # intentional Rails pattern, and whether the caller wanted skip-vs-
-          # overwrite is not inferable from the call. Cop is disabled by
-          # default (see .rubocop.yml) — detection alone over-flags the
-          # legitimate DO NOTHING pattern.
+          # to DO UPDATE, rewriting existing rows. The matcher is narrowed to
+          # `insert_all(..., unique_by:)` only — the shape where unique_by
+          # implies upsert intent but insert_all silently skips. Bare insert_all
+          # (no unique_by) is the legitimate DO NOTHING pattern and is not flagged.
           add_offense(node.loc.selector)
         end
       end
