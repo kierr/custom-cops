@@ -161,7 +161,7 @@ module RuboCop
         def compound_guard?(var_name, condition)
           return false unless condition.or_type? || condition.and_type?
 
-          condition.children.any? { |child| return check_condition?(var_name, child) }
+          condition.children.any? { |child| check_condition?(var_name, child) }
         end
 
         def lvar_named?(node, var_name)
