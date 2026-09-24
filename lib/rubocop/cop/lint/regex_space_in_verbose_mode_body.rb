@@ -75,68 +75,68 @@ module RuboCop
             next unless child&.type == :str
 
             parts << child.value
-            parts.join
           end
+          parts.join
+        end
 
-          # Walk the source string character by character, tracking whether we
-          # are inside a character class `[...]`. Unescaped spaces outside
-          # character classes are flagged.
-          def find_ignored_spaces(source)
-            offenses = []
-            in_char_class = false
-            idx = 0
+        # Walk the source string character by character, tracking whether we
+        # are inside a character class `[...]`. Unescaped spaces outside
+        # character classes are flagged.
+        def find_ignored_spaces(source)
+          offenses = []
+          in_char_class = false
+          idx = 0
 
-            while idx < source.length
-              ch = source[idx]
+          while idx < source.length
+            ch = source[idx]
 
-              if ch == '\\' && idx + 1 < source.length
-                # Skip escaped character (e.g., \s, \ , \\)
-                idx += 2
-                next
-              end
-
-              if ch == '['
-                in_char_class = true
-                idx += 1
-                next
-              end
-
-              if ch == ']'
-                in_char_class = false
-                idx += 1
-                next
-              end
-
-              if ch == ' ' && !in_char_class && space_between_content?(source, idx)
-                # Only flag if the space is between non-space, non-pipe,
-                # non-parenthesis characters (i.e., it looks like part of
-                # a multi-word token, not formatting between groups).
-                offenses << idx
-              end
-
-              idx += 1
+            if ch == '\\' && idx + 1 < source.length
+              # Skip escaped character (e.g., \s, \ , \\)
+              idx += 2
+              next
             end
 
-            offenses
+            if ch == '['
+              in_char_class = true
+              idx += 1
+              next
+            end
+
+            if ch == ']'
+              in_char_class = false
+              idx += 1
+              next
+            end
+
+            if ch == ' ' && !in_char_class && space_between_content?(source, idx)
+              # Only flag if the space is between non-space, non-pipe,
+              # non-parenthesis characters (i.e., it looks like part of
+              # a multi-word token, not formatting between groups).
+              offenses << idx
+            end
+
+            idx += 1
           end
 
-          # Check that the space sits between content characters on both sides.
-          # A space at the very start/end or adjacent to `|`, `(`, `)` is
-          # formatting, not part of a multi-word token.
-          def space_between_content?(source, idx)
-            prev_ch = idx.positive? ? source[idx - 1] : nil
-            next_ch = idx + 1 < source.length ? source[idx + 1] : nil
+          offenses
+        end
 
-            return false unless prev_ch && next_ch
-            return false if formatting_boundary?(prev_ch)
-            return false if formatting_boundary?(next_ch)
+        # Check that the space sits between content characters on both sides.
+        # A space at the very start/end or adjacent to `|`, `(`, `)` is
+        # formatting, not part of a multi-word token.
+        def space_between_content?(source, idx)
+          prev_ch = idx.positive? ? source[idx - 1] : nil
+          next_ch = idx + 1 < source.length ? source[idx + 1] : nil
 
-            true
-          end
+          return false unless prev_ch && next_ch
+          return false if formatting_boundary?(prev_ch)
+          return false if formatting_boundary?(next_ch)
 
-          def formatting_boundary?(ch)
-            FORMATTING_CHARS.include?(ch)
-          end
+          true
+        end
+
+        def formatting_boundary?(ch)
+          FORMATTING_CHARS.include?(ch)
         end
       end
     end
