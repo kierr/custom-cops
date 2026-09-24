@@ -72,4 +72,17 @@ class NokolexborCssFirstWithoutNilGuardTest < Minitest::Test
       table.css('tr')
     RUBY
   end
+
+  def test_no_offense_with_guard_after_nonmatching_if
+    # Regression: `return check_condition?` inside `any?` returned on the first
+    # guard node, so a non-matching `return if skip?` (not a guard for table)
+    # made any? return false and the real `return if table.nil?` was never
+    # checked — false positive. Drop `return` so any? sees every guard.
+    assert_no_offense(COP, <<~RUBY)
+      table = doc.css('table').first
+      return if skip?
+      return if table.nil?
+      table.css('tr')
+    RUBY
+  end
 end

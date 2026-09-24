@@ -122,7 +122,7 @@ module RuboCop
             condition = guard_node.respond_to?(:condition) ? guard_node.condition : nil
             next false unless condition
 
-            return check_condition?(var_name, condition)
+            check_condition?(var_name, condition)
           end
         end
 
