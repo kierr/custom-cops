@@ -75,13 +75,13 @@ module RuboCop
           body.each_node(:send).any? do |send_node|
             send_node.method_name == :raise && send_node.receiver.nil? && send_node.arguments.empty?
           end
+        end
 
-          # Walk all descendants for any lvar reference matching the exception
-          # variable. This catches direct usage (`e`), method calls (`e.message`),
-          # interpolation (`#{e}`), and keyword arg values (`error: e`).
-          def body_references_variable?(body, var)
-            body.each_descendant(:lvar).any? { |lvar_node| lvar_node.name == var }
-          end
+        # Walk all descendants for any lvar reference matching the exception
+        # variable. This catches direct usage (`e`), method calls (`e.message`),
+        # interpolation (`#{e}`), and keyword arg values (`error: e`).
+        def body_references_variable?(body, var)
+          body.each_descendant(:lvar).any? { |lvar_node| lvar_node.name == var }
         end
       end
     end
