@@ -34,7 +34,7 @@ Lint/CompactStripsNilProxy:
 
 Lint/ConstantInsideMethod:
   Description: 'Detects constants defined inside methods.'
-  Enabled: true
+  Enabled: false
 
 Lint/InsertAllNotUpsertAll:
   Description: 'Detects `insert_all` used where `upsert_all` is needed for idempotency.'

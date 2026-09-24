@@ -4,14 +4,14 @@
 module RuboCop
   module Cop
     module Lint
-      # DECISION: this cop is NOT wired (.rubocop.yml) and must not be enabled.
+      # DECISION: this cop is disabled in config/default.yml and must not be enabled.
       # RATIONALE: structurally unwireable — its target (`CONST = x` inside a method
       # body) is a Ruby parse-time SyntaxError ("dynamic constant assignment"), so a
       # file with a real offense never parses and the cop never runs on it. Audit #1198:
       # 0 real / 20 false positive (hash rockets, heredoc contents, class-level
       # constants misclassified by the line-based depth tracker). Would need a genuinely
       # different target (e.g. explicit-receiver constant mutation `Object::FOO =`, or
-      # `const_set`) to reconsider — left unwired as a stub.
+      # `const_set`) to reconsider — left disabled as a stub.
       class ConstantInsideMethod < Base
         MSG = 'Do not assign constants inside a method body. Move the constant to module/class level.'
 
