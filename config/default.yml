@@ -58,7 +58,7 @@ Lint/NoStatusMarkers:
 
 Lint/OrOperatorWithFalsyFloat:
   Description: 'Detects `||` with falsy float values (0.0, NaN).'
-  Enabled: true
+  Enabled: false
 
 Lint/PresentDropsBooleanFalse:
   Description: 'Detects `present?` on boolean values, which drops false.'

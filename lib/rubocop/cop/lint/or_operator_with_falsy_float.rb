@@ -4,12 +4,13 @@
 module RuboCop
   module Cop
     module Lint
-      # DISABLED — see .rubocop.yml. Ruby `||` treats only nil and false as
+      # Disabled — see config/default.yml. Ruby `||` treats only nil and false as
       # falsy; 0.0 and 0 are truthy, so `score || 1.0` already preserves a
       # zero. This cop's premise ("`||` treats 0.0 as falsy") confuses Ruby
       # truthiness with C/Python/JS numeric falsiness and was empirically
-      # disproven (`0.0 || 1.0 #=> 0.0`). Kept loadable; every offense it
-      # would raise is a false positive and the autocorrect is a semantic no-op.
+      # disproven (`0.0 || 1.0 #=> 0.0`). Kept loadable for historical reference;
+      # every offense it would raise is a false positive and the autocorrect is
+      # a semantic no-op for numeric values.
       class OrOperatorWithFalsyFloat < Base
         MSG = '`||` treats explicit `0.0` as falsy for numeric field `%<field>s`. Use `%<field>s.nil? ? %<fallback>s : %<field>s`.'
 
@@ -52,19 +53,19 @@ module RuboCop
 
           downcased = name.downcase
           NUMERIC_NAME_PATTERNS.any? { |pattern| downcased.include?(pattern) }
+        end
 
-          def extract_name(node)
-            case node.type
-            when :send
-              # obj.confidence, score, self.score, obj&.score
-              node.method_name.to_s
-            when :lvar, :ivar, :cvar
-              node.children.first.to_s
-            when :gvar
-              node.children.first.to_s.delete_prefix('$')
-            when :const
-              node.children[1].to_s
-            end
+        def extract_name(node)
+          case node.type
+          when :send
+            # obj.confidence, score, self.score, obj&.score
+            node.method_name.to_s
+          when :lvar, :ivar, :cvar
+            node.children.first.to_s
+          when :gvar
+            node.children.first.to_s.delete_prefix('$')
+          when :const
+            node.children[1].to_s
           end
         end
       end
